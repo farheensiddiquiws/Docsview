@@ -3,6 +3,7 @@ import request from 'supertest';
 import { openDb } from './db.js';
 import { seed, DEMO_PASSWORD } from './seed.js';
 import { createApp } from './app.js';
+import { createMailerFromEnv } from './mailer.js';
 
 let app;
 async function loginAs(email) {
@@ -154,6 +155,25 @@ describe('share notification email', () => {
     const r2 = await a2.put(`/api/documents/${d2.id}/shares`).send({ email: 'bob@ajaia.test', role: 'viewer' }).expect(200);
     expect(r2.body.email).toBe('failed');
     expect(r2.body.shares).toHaveLength(1);
+  });
+});
+
+describe('mailer configuration', () => {
+  it('uses the Brevo HTTPS API when BREVO_API_KEY is set', async () => {
+    const calls = [];
+    const fakeFetch = async (url, init) => { calls.push({ url, init }); return { ok: true }; };
+    const mailer = createMailerFromEnv({ BREVO_API_KEY: 'k', MAIL_FROM_EMAIL: 'me@example.com' }, fakeFetch);
+    await mailer.send({ to: 'x@example.com', subject: 'S', text: 'T', html: '<p>H</p>' });
+    expect(calls[0].url).toBe('https://api.brevo.com/v3/smtp/email');
+    expect(calls[0].init.headers['api-key']).toBe('k');
+    expect(JSON.parse(calls[0].init.body)).toMatchObject({ sender: { email: 'me@example.com' }, to: [{ email: 'x@example.com' }], subject: 'S' });
+  });
+
+  it('surfaces Brevo errors and returns null when nothing is configured', async () => {
+    const mailer = createMailerFromEnv({ BREVO_API_KEY: 'k', MAIL_FROM_EMAIL: 'me@example.com' },
+      async () => ({ ok: false, status: 401, text: async () => 'Key not found' }));
+    await expect(mailer.send({ to: 'x@example.com', subject: 'S', text: 'T', html: 'H' })).rejects.toThrow(/401/);
+    expect(createMailerFromEnv({})).toBeNull();
   });
 });
 

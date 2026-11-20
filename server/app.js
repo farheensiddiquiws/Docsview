@@ -212,7 +212,7 @@ export function createApp(db, { secureCookies = false, mailer = null, appUrl = n
           await mailer.send(shareEmail({ to: normalized, ownerName: req.user.name, title: doc.title, role, url, isNewUser: !target.registered }));
           emailStatus = 'sent';
         } catch (err) {
-          console.error('Share email failed:', err.message);
+          console.error(`Share email to ${normalized} failed:`, err.message);
           emailStatus = 'failed';
         }
       }

@@ -16,7 +16,7 @@ const db = openDb(dbFile);
 seed(db);
 
 const mailer = createMailerFromEnv();
-console.log(mailer ? `Share emails: enabled (${process.env.SMTP_USER})` : 'Share emails: disabled (set SMTP_USER and SMTP_PASS to enable)');
+console.log(mailer ? `Share emails: enabled via ${mailer.describe}` : 'Share emails: disabled (set BREVO_API_KEY + MAIL_FROM_EMAIL, or SMTP_USER + SMTP_PASS)');
 const app = createApp(db, { secureCookies: isProd && process.env.INSECURE_COOKIES !== '1', mailer, appUrl: process.env.APP_URL ?? null });
 if (isProd) app.set('trust proxy', 1);
 

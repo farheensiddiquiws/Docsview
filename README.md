@@ -50,15 +50,14 @@ The database is created at `data/ajaia-docs.db`; override it with `DATABASE_PATH
 
 ## Share-notification emails (optional)
 
-Sharing works without email. To also email recipients, copy `.env.example` to `.env` and set:
+Sharing works without email. To also email recipients, set **one** of these (in `.env` locally, or as environment variables on the host):
 
-```bash
-SMTP_USER=you@gmail.com
-SMTP_PASS=<16-character Gmail App Password>   # Google Account → Security → 2-Step Verification → App passwords
-APP_URL=https://your-deployment-url          # optional, used for links in the email
-```
+| Option | Variables | When to use |
+|---|---|---|
+| **Brevo HTTPS API** (free, 300/day) | `BREVO_API_KEY`, `MAIL_FROM_EMAIL` (a sender verified in Brevo) | Hosts that block SMTP ports, such as **Render's free plan** |
+| Gmail SMTP | `SMTP_USER`, `SMTP_PASS` (a Gmail App Password) | Local development or hosts that allow outbound SMTP |
 
-On a host, set the same values as environment variables. The server logs `Share emails: enabled` on startup when this is configured. If sending fails, the share still succeeds and the Share dialog tells the owner to send the link themselves.
+Also set `APP_URL=https://your-deployment-url` so email links point to the live app. On startup the server logs `Share emails: enabled via …`. If sending fails, the share still succeeds, the failure is logged, and the Share dialog tells the owner to send the link manually.
 
 ## Tests
 
