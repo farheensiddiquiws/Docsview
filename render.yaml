@@ -1,0 +1,8 @@
+# One-click Render Blueprint. Free plan = ephemeral disk (data resets on redeploy / idle spin-down;
+# demo users are re-seeded automatically). Add a persistent disk on a paid plan to keep data.
+services:
+  - type: web
+    name: ajaia-docs
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
