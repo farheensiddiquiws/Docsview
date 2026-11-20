@@ -1,6 +1,6 @@
 # Submission: Ajaia Docs
 
-- **Live URL:** `<DEPLOYMENT_URL>`
+- **Live URL:** https://ajaia-docs-v6il.onrender.com
 - **Walkthrough video:** see `VIDEO_URL.txt`
 - **Test accounts** (password `password123`): `alice@ajaia.test` (owner of the seeded doc), `bob@ajaia.test`, `carol@ajaia.test`
 

@@ -2,7 +2,7 @@
 
 A lightweight collaborative document editor: create, format, import, and share documents with owner, editor and viewer access.
 
-**Live demo:** `<DEPLOYMENT_URL>` · **Walkthrough:** see [VIDEO_URL.txt](VIDEO_URL.txt)
+**Live demo:** https://ajaia-docs-v6il.onrender.com · **Walkthrough:** see [VIDEO_URL.txt](VIDEO_URL.txt)
 
 ## Demo accounts
 
